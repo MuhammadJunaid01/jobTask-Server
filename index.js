@@ -21,8 +21,33 @@ async function run() {
     await client.connect();
     const database = client.db("ArkCom");
     const jsPostCollection = database.collection("jsPost");
+    const reactPostCollection = database.collection("reactPost");
+    const hooksPostCollection = database.collection("hooksPost");
+    const contextPostCollection = database.collection("contextPost");
+    // javascript postCollection get api
     app.get("/jsPost", async (req, res) => {
       const cursor = jsPostCollection.find({});
+      const result = await cursor.toArray();
+      //   console.log("filter result", result);
+      res.json(result);
+    });
+    // react  postCollection get api
+    app.get("/reactPost", async (req, res) => {
+      const cursor = reactPostCollection.find({});
+      const result = await cursor.toArray();
+      //   console.log("filter result", result);
+      res.json(result);
+    });
+    // hooks  postCollection get api
+    app.get("/hooksPost", async (req, res) => {
+      const cursor = hooksPostCollection.find({});
+      const result = await cursor.toArray();
+      //   console.log("filter result", result);
+      res.json(result);
+    });
+    // context  postCollection get api
+    app.get("/contextPost", async (req, res) => {
+      const cursor = contextPostCollection.find({});
       const result = await cursor.toArray();
       //   console.log("filter result", result);
       res.json(result);
