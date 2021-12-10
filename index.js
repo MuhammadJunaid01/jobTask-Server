@@ -25,12 +25,20 @@ async function run() {
     const hooksPostCollection = database.collection("hooksPost");
     const contextPostCollection = database.collection("contextPost");
     const usersCollection = database.collection("users");
+    const commentCollection = database.collection("comment");
     // javascript postCollection get api
     app.get("/jsPost", async (req, res) => {
       const cursor = jsPostCollection.find({});
       const result = await cursor.toArray();
       //   console.log("filter result", result);
       res.json(result);
+    });
+    app.get("/jsPost/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const result = await jsPostCollection.findOne({ _id: ObjectId(id) });
+      res.json(result);
+      console.log("filter result", result);
     });
     app.post("/jsPost", async (req, res) => {
       const content = req.body;
@@ -77,6 +85,12 @@ async function run() {
       console.log("reviews", req.body);
       const users = await usersCollection.insertOne(req.body);
       res.json(users);
+    });
+    // comment post api
+    app.post("/commentPostJs", async (req, res) => {
+      const comment = req.body;
+      const result = await commentCollection.insertOne(comment);
+      res.json(result);
     });
     app.put("/users", async (req, res) => {
       const user = req.body;
