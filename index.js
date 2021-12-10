@@ -24,6 +24,7 @@ async function run() {
     const reactPostCollection = database.collection("reactPost");
     const hooksPostCollection = database.collection("hooksPost");
     const contextPostCollection = database.collection("contextPost");
+    const usersCollection = database.collection("users");
     // javascript postCollection get api
     app.get("/jsPost", async (req, res) => {
       const cursor = jsPostCollection.find({});
@@ -51,6 +52,43 @@ async function run() {
       const result = await cursor.toArray();
       //   console.log("filter result", result);
       res.json(result);
+    });
+    app.post("/users", async (req, res) => {
+      console.log("reviews", req.body);
+      const users = await usersCollection.insertOne(req.body);
+      res.json(users);
+    });
+    app.put("/users", async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const options = { upsert: true };
+      const updateDoc = { $set: user };
+      const result = await usersCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      console.log(result);
+      res.json(result);
+    });
+    app.put("/users/admin", async (req, res) => {
+      const user = req.body;
+      console.log("put user", user);
+
+      const filter = { email: user.email };
+      const updateDoc = { $set: { role: "admin" } };
+      const result = await usersCollection.updateOne(filter, updateDoc);
+      res.json(result);
+    });
+    app.get("/users/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+      let isAdmin = false;
+      if (user?.role === "admin") {
+        isAdmin = true;
+      }
+      res.json({ admin: isAdmin });
     });
   } finally {
     // await client.close();
