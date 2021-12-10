@@ -32,11 +32,21 @@ async function run() {
       //   console.log("filter result", result);
       res.json(result);
     });
+    app.post("/jsPost", async (req, res) => {
+      const content = req.body;
+      const result = await jsPostCollection.insertOne(content);
+      res.json(result);
+    });
     // react  postCollection get api
     app.get("/reactPost", async (req, res) => {
       const cursor = reactPostCollection.find({});
       const result = await cursor.toArray();
       //   console.log("filter result", result);
+      res.json(result);
+    });
+    app.post("/reactPost", async (req, res) => {
+      const content = req.body;
+      const result = await reactPostCollection.insertOne(content);
       res.json(result);
     });
     // hooks  postCollection get api
@@ -46,11 +56,21 @@ async function run() {
       //   console.log("filter result", result);
       res.json(result);
     });
+    app.post("/hooksPost", async (req, res) => {
+      const content = req.body;
+      const result = await hooksPostCollection.insertOne(content);
+      res.json(result);
+    });
     // context  postCollection get api
     app.get("/contextPost", async (req, res) => {
       const cursor = contextPostCollection.find({});
       const result = await cursor.toArray();
       //   console.log("filter result", result);
+      res.json(result);
+    });
+    app.post("/contextPost", async (req, res) => {
+      const content = req.body;
+      const result = await contextPostCollection.insertOne(content);
       res.json(result);
     });
     app.post("/users", async (req, res) => {
