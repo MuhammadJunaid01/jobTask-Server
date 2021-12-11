@@ -92,6 +92,14 @@ async function run() {
       const result = await commentCollection.insertOne(comment);
       res.json(result);
     });
+    app.get("/commentPostJs/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { id: id };
+
+      const cursor = commentCollection.find(query);
+      const result = await cursor.toArray();
+      res.json(result);
+    });
     app.put("/users", async (req, res) => {
       const user = req.body;
       const filter = { email: user.email };
